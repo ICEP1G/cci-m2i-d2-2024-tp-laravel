@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MembersController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,21 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    echo (new \App\Http\Controllers\Controller())->index();
-});
-Route::get('/assosier', function () {
-    echo (new \App\Http\Controllers\AssocierControlleurs)->index();
-});
-Route::get('/assosier-creer', function () {
-    echo (new \App\Http\Controllers\AssocierControlleurs)->create();
-});
-Route::post('/assosier-creer-2', function () {
-    echo (new \App\Http\Controllers\AssocierControlleurs)->store();
-});
-Route::get('/assosier-show', function () {
-    echo (new \App\Http\Controllers\AssocierControlleurs)->show();
-});
-Route::get('/assosier-detruite', function () {
-    echo (new \App\Http\Controllers\AssocierControlleurs)->delete();
+Route::get('/', [WelcomeController::class, 'index'])->name('index');
+Route::get('/about', [WelcomeController::class, 'about'])->name('about');
+Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact');
+
+Route::prefix('/members')
+    ->as('members.')
+    ->group(function () {
+
+    Route::get('/', [MembersController::class, 'index'])->name('index');
+    Route::get('/create', [MembersController::class, 'create'])->name('create');
+    Route::post('/store', [MembersController::class, 'store'])->name('store');
+    Route::get('/show/{id}', [MembersController::class, 'show'])->name('show');
+    Route::delete('/delete', [MembersController::class, 'delete'])->name('delete');
 });
